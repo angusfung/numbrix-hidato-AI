@@ -498,9 +498,10 @@ class BT:
         if status == False:
             print("CSP{} unsolved. Has no solutions".format(self.csp.name))
         if status == True:
-            print("CSP {} solved. CPU Time used = {}".format(self.csp.name,
-                                                             time.process_time() - stime))
-            self.csp.print_soln()
+            #print("CSP {} solved. CPU Time used = {}".format(self.csp.name,
+                                                             #time.process_time() - stime))
+            pass
+            #self.csp.print_soln()
 
         print("bt_search finished")
         self.print_stats()
@@ -546,4 +547,3 @@ class BT:
 
             self.restoreUnasgnVar(var)
             return False
-

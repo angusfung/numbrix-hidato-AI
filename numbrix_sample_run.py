@@ -1,100 +1,60 @@
-from numbrix_csp import *
-from propagators import *
+from numbrix_reg_csp import * 
+from test_case_hidato import *
+from test_case_numbrix import *
+from propagators2 import *
 import ast, sys
+import os
 
-#Solution
-#3x3
-# '''
-# b1 = ([3, 2, 9],
-#         [4, 1, 8],
-#         [5, 6, 7])
-# '''
-# 
-# b1 = ([3, -1, 9],
-#         [-1, 1, 8],
-#         [5,-1, -1])
-#         
-# #4x4
-# '''
-# b2 = ([1, 2, 3, 4],
-#        [14, 13, 6, 5],
-#        [15 ,12, 7, 8],
-#        [16, 11, 10, 9])
-# '''
-# b2 = ([-1,2,-1,-1],
-#         [14, -1, 6, 5],
-#         [-1, 12, -1, 8],
-#         [16, -1, -1, -1])
-#         
-# '''
-# b3 = ([1, 2, 13, 12],
-#        [4, 3, 14, 11],
-#        [5 ,16, 15, 10],
-#        [6, 7, 8, 9])
-# # '''     
-# b3 = ([1, 2, -1, 12],
-#        [4, -1, 14, -1],
-#        [-1 ,-1, 15, 10],
-#        [6, 7, -1, 9])
-#        
-# b4 = ([-1,-1,-1,1],
-#         [-1,-1,-1,-1],
-#         [-1,-1,-1,-1],
-#         [-1,-1,-1,16])
-#         
-# 
-# b5 = ([-1,15,10,9,8,-1],
-#         [17,-1,-1,-1,-1,6],
-#         [18,-1,12,3,-1,1],
-#         [19,-1,25,26,-1,30],
-#         [20,-1,-1,-1,-1,31],
-#         [-1,22,35,34,33,-1])
 
-# b6 = ([-1,7,-1,-1,34,-1],
-#         [9,6,-1,-1,33,36],
-#         [-1,-1,-1,-1,-1,-1],
-#         [-1,-1,-1,-1,-1,-1],
-#         [12,15,-1,-1,22,25],
-#         [-1,14,-1,-1,23,-1])
-        
-b7 = ([-1,-1,7],
-        [-1,-1,-2],
-        [1,-1,-2])
-        
-'''b8 = ([1,2,-2,12]
-        [-2,3,-2,11]
-        [5,4,-2,10]
-        [6,7,8,9])'''
-b8 = ([1,-1,-2,12],
-        [-2,-1,-2,-1],
-        [-1,-1,-2,-1],
-        [6,-1,-1,-1])
-
-'''b9 = ([-2,1,-2,-2],
-        [13,2,3,-2],
-        [12,-2,4,-2],
-        [11,10,5,6],
-        [-2,9,8,7])'''
-b9 = ([-2,1,-2,-2],
-        [-1,-1,-1,-2],
-        [12,-2,-1,-2],
-        [-1,-1,-1,-1],
-        [-2,-1,-1,-1])
-        
 def print_numbrix_soln(var_array):
-    for row in var_array:
-        print(["-2" if type(var) == int else var.get_assigned_value() for var in row])
+
+    if isinstance(var_array[0],list) == True:
+        for i in range(len((var_array))):
+            for j in range(len(var_array[0])):
+                if var_array[i][j] != 0:
+                    print("{:>3}".format(str(var_array[i][j].get_assigned_value())), end = '')
+                else:
+                    print("{:>3}".format(str('X')), end = '')
+            print('')
+    else:
+        for i in range(len(var_array)):
+            if var_array[i] != 0:
+                print("{:>3}".format(str(var_array[i].get_assigned_value())), end = '')
+            else:
+                print("{:>3}".format(str('X')), end = '')
+        print('')
+        
 
 if __name__ == "__main__":
 
-    for b in [b7, b8, b9]:
-        print("Solving board:")
-        print("Using Model 1")
+    for b in [a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11]: #Numbrix Test Cases from 3x3 to 10x10
+    #for b in [c0,c1,c2,c3,c4,c5,c6,c7]: #Testing the Ability to Handle 3x3 to 6x6 Hidato
+    #for b in [hidsq1,hidsq2,hidsq3,hidsq4,hidsq5,hidsq6]: #Official Hidato Puzzles
+    #for b in [hid1,hid2,hid3,hid4,hid5,hid6,hid7,hid8,hid9,hid10,hid11]: #Hidato with Obstacles
+        print("Solving Numbrix/Hidato Puzzle:")
+
+
+        print("Using Model to solve Numbrix/Hidato: ")
+        start_time = os.times()[0]
         csp, var_array = numbrix_model_1(b)
         solver = BT(csp)
-        print("=======================================================")
+        print("===============================================================")
+        start_solver = os.times()[0]
+        print("The total set up time taken is: ",start_solver - start_time," seconds")
+        print("---------------------------------------------------------------")
         print("FC")
         solver.bt_search(prop_FC)
-        print("Solution")
+        end_time = os.times()[0]
+        print("The FC time taken is: ",end_time - start_solver," seconds")
+        print("---------------------------------------------------------------")
+        print("GAC")
+        start_solver = os.times()[0]
+        solver.bt_search(prop_GAC)
+        end_time = os.times()[0]
+        print("The GAC time taken is: ",end_time - start_solver," seconds")
+        print("---------------------------------------------------------------")
+        print("Solution: ")
         print_numbrix_soln(var_array)
-        
+        print("===============================================================")
+        print('')
+        print('')
