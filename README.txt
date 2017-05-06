@@ -1,6 +1,7 @@
 Authors: Angus Fung, Alvin Lee, Ryan You
 
 Please run on Python3.
+Report uploaded as a pdf.
 
 1. Please put all of the below files into the same directory.
 numbrix_sample_run.py
